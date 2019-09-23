@@ -1,3 +1,4 @@
+//Definimos el websocket
 var wsUri = "ws://" + document.location.host + document.location.pathname + "tablero";
 var websocket = new WebSocket(wsUri);
 
@@ -18,7 +19,11 @@ function OnOpen(evt) {
 }
 function OnMessage(evt) {
     console.log("received: " + evt.data);
+    //Condición que dibuja el canvas en los demás, solo a aquellos 
+    //usuarios con la opcion de recibir de todos (checkbox) seleccionada
     if (document.inputForm.receiveInstant.checked) {
+        //Condicionales para dibujar un punto, recrear canvas completo o mandar una notificación
+        //dependiendo del tipo de dato recibido
         if (typeof evt.data === "string") {
             if (evt.data.charAt(0) === "A"){
                 $.notify({ title: '<strong>Actividad reciente</strong></br>',  message: evt.data },{ type: 'info' });
@@ -34,6 +39,7 @@ function OnMessage(evt) {
 function OnError(evt) {
     writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
 }
+//Escribe en pantalla lo mandado en el parámetro message
 function writeToScreen(message) {
     output.innerHTML += message + "<br>";
 }

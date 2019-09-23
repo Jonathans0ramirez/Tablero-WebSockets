@@ -21,6 +21,7 @@ public class TableroCompartido {
     private static Set<Session> peers
             = Collections.synchronizedSet(new HashSet<Session>());
 
+    //Transmite a todas las sesiones el objeto figura enviado por alguien, es decir las coordenadas x , y
     @OnMessage
     public void broadcastFigure(Figure figure, Session session) throws IOException, EncodeException {
         System.out.println("broadcastFigure: " + figure);
@@ -31,6 +32,7 @@ public class TableroCompartido {
         }
     }
 
+    //Transmite a todas las sesiones el objeto binario enviado por alguien, esto corresponde al canvas entero
     @OnMessage
     public void broadcastSnapshot(ByteBuffer data, Session session) throws IOException {
         System.out.println("broadcastBinary: " + data);
@@ -41,6 +43,7 @@ public class TableroCompartido {
         }
     }
 
+    //Además de añadir la nueva sesión, envía un mensaje a los demás informando de la nueva sesión
     @OnOpen
     public void onOpen(Session p) throws IOException {
         System.out.println("Session opened ==> " + p.getId());
@@ -52,6 +55,7 @@ public class TableroCompartido {
         }
     }
 
+    //Además de eliminar una sesión, envía un mensaje a los demás informando de la desconexión de la sesión
     @OnClose
     public void onClose(Session p) throws IOException {
         System.out.println("Session closed ==> " + p.getId());

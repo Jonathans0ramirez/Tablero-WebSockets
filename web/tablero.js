@@ -3,21 +3,25 @@ var printCanvasBtn = document.getElementById("printVoucher");
 var context = canvas.getContext("2d");
 canvas.addEventListener("click", defineImage, false);
 
+//Evento que inicia prepara el canvas y lo convierte en un archivo .PNG para su descarga
 printCanvasBtn.addEventListener('click', function (e) {
     var dataURL = canvas.toDataURL('image/png');
     printCanvasBtn.href = dataURL;
     $.notify({ title: '<strong>Descarga en proceso</strong></br>',  message: "La imagen se est&aacute; descargando..." },{ type: 'success' });
 });
 
+//Necesario para visualizar las ayudas (tooltips)
 $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
 });
 
+//Limpia el canvas y lo envía a todos
 function clearCanvas() {
     context.clearRect(0,0,canvas.width,canvas.height);
     defineImageBinary();
 }
 
+//Función para obtener un color aleatorio
 function getRandomColor() {
   var letters = '0123456789ABCDEF';
   var color = '#';
@@ -27,12 +31,13 @@ function getRandomColor() {
   return color;
 }
 
+//Función que se encarga de asignarle un color aleatorio al input color
 function setRandomColor(){
     var color = document.inputForm.color;
     color.value = getRandomColor();
 }
 
-//Funcion que toma las coordenadas x y y
+//Función que toma las coordenadas x y y
 function getCurrentPos(evt) {
     var rect = canvas.getBoundingClientRect();
     return {
@@ -41,7 +46,7 @@ function getCurrentPos(evt) {
     };
 }
 
-//Funcion para tomar el color y la forma desde el formulario HTML5
+//Función para tomar el color y la forma desde el formulario HTML5
 function defineImage(evt) {
     var currentPos = getCurrentPos(evt);
 
@@ -63,11 +68,13 @@ function defineImage(evt) {
         }
     });
     drawImageText(json);
+    //Condición que envía el canvas a los demás, solo si está seleccionada la opción de enviar a todos (checkbox)
     if (document.inputForm.sendInstant.checked) {
         sendText(json);
     }
 }
 
+//Pinta un punto, cuadrado o circulo, en el canvas
 function drawImageText(image) {
     var json = JSON.parse(image);
     context.fillStyle = json.color;
@@ -84,6 +91,7 @@ function drawImageText(image) {
     }
 }
 
+//Recrea el canvas completo
 function drawImageBinary(blob) {
     var bytes = new Uint8Array(blob);
 
@@ -100,6 +108,7 @@ function drawImageBinary(blob) {
     img.src = canvas.toDataURL();
 }
 
+//Función para tomar cada punto del canvas
 function defineImageBinary() {
     var image = context.getImageData(0, 0, canvas.width, canvas.height);
     var buffer = new ArrayBuffer(image.data.length);
@@ -107,6 +116,7 @@ function defineImageBinary() {
     for (var i = 0; i < bytes.length; i++) {
         bytes[i] = image.data[i];
     }
+    //Condición que envía el canvas a los demás, solo si está seleccionada la opción de enviar a todos (checkbox)
     if (document.inputForm.sendInstant.checked) {
         sendBinary(buffer);
     }
