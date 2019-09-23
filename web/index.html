@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tablero - WebSockets</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <style>
+            h1 {text-align: center}
+            th, td {padding: 0 10px;}
+            td {text-align: center;}
+        </style>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <h1>Tablero Compartido</h1>
+            <div id="output" style="text-align: end;"></div>
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <canvas id="myCanvas" width="300" height="300"
+                                style="border:1px solid #000000;margin: 20px;"></canvas>
+                    </td>
+                    <td>
+                        <form name="inputForm">
+                            <table class="table table-striped">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th colspan="3"><h3>Controles</h3></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>Color</th>
+                                        <td><input type="color" name="color" value="#FF0000" style="width:100%"></td>
+                                        <td><button type="button" class="btn btn-secondary" onclick="setRandomColor(); return false;">Generar color aleatorio</button></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Forma</th>
+                                        <td><input type="radio" class="form-check-input" name="shape" value="square" checked>Cuadrado</td>
+                                        <td><input type="radio" class="form-check-input" name="shape" value="circle" >Circulo</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Opciones en l&iacute;nea</th>
+                                        <td><input type="checkbox" class="form-check-input" name="sendInstant" value="Online" checked data-toggle="tooltip" data-placement="left" title="Env&iacute;a todo lo que hagas en tiempo real">Enviar a todos</td>
+                                        <td><input type="checkbox" class="form-check-input" name="receiveInstant" value="Online" checked data-toggle="tooltip" data-placement="left" title="Recibe todo lo que los dem&aacute;s hagan en tiempo real">Recibir de todos</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Acciones</th>
+                                        <td><input type="submit" class="btn btn-secondary" value="Enviar pizarra actual" data-toggle="tooltip" data-placement="bottom" title="Env&iacute;a lo dibujado en la pizarra a todos" onclick="defineImageBinary(); return false;"></td>
+                                        <td><input type="submit" class="btn btn-secondary" value="Limpiar pizarra actual" data-toggle="tooltip" data-placement="bottom" title="Limpia la pizarra de todos" onclick="clearCanvas(); return false;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"><a href="#"  id="printVoucher" download="canvas.png">DESCARGAR IMAGEN</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="bootstrap-notify.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="websocket.js"></script>
+        <script type="text/javascript" src="tablero.js"></script>
+    </body>
+</html>
